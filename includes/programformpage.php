@@ -106,6 +106,7 @@ $show_host    = $personaData['name'];
 $host_bio     = $personaData['bio'];
 $host_bio     = strip_tags(html_entity_decode($host_bio));
 $host_logo    = $personaData['image'];
+$host_email   = $personaData['email'];
 $show_type    = $show_info_array['category'];
 $show_title   = $show_info_array['title'];
 //echo "ID is " . $show_blog_id;
@@ -115,6 +116,8 @@ $pagedata = <<<EOT
 [et_pb_column type="2_5" _builder_version="3.0.47"][et_pb_image src="$show_logo" _builder_version="3.22.1"][/et_pb_image]
 [et_pb_text _builder_version="3.22.1"]<h3>Podcasts/Show Archives</h3>
 <a href="https://ksqd.org/feed/podcast/$rss_feed_url">$show_title - Podcast RSS Feed</a>[/et_pb_text]
+[et_pb_text _builder_version="3.22.1"]
+<a onclick = "cook_email()" href="https://ksqd.org/host-contact-form/" target="_blank">Click here to contact $show_host</a>[/et_pb_text]
 [/et_pb_column]
 [et_pb_column type="3_5" _builder_version="3.0.47"][et_pb_testimonial _builder_version="3.15"]$show_descrip [/et_pb_testimonial]
 [et_pb_text _builder_version="3.22.1"]<p>Hosted by <strong>$show_host</strong></p>
@@ -128,7 +131,13 @@ $pagedata = <<<EOT
 [et_pb_image src="$host_logo" _builder_version="3.22.1"][/et_pb_image]
 [et_pb_text _builder_version="3.19.14"]<h2>$show_host</h2>$host_bio
 [/et_pb_text]
+[et_pb_text _builder_version="3.19.14"]<h2>Recent Playlist</h2>
+[wspin action="playing" count="5" show_id=$show_id_no]
+[/et_pb_text]
 [/et_pb_column][/et_pb_row]
+<script type="text/javascript">
+    function cook_email(){ document.cookie = "host_email=$host_email;path=/"; }
+</script>
 EOT;
 if (!empty($uid['show_id'])) 
 	echo $pagedata; // which works?
