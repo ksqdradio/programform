@@ -65,7 +65,7 @@ function showContent($title, &$uid) {
 
   $blog_id = array();
   $blog_id['None'] = '';
-  $sql = "SELECT post_title FROM `wp_posts` 
+/*  $sql = "SELECT post_title FROM `wp_posts` 
 		WHERE post_type = 'pt_view'";
   $result = $this->db->query($sql);
   while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
@@ -73,24 +73,41 @@ function showContent($title, &$uid) {
     $temp_split = explode(' [ID: ',$temp); // 0 is name, 1 is ID
     $temp_split[1] = substr($temp_split[1], 0, -1); // removes ']' from ID
     $blog_id[$temp_split[0]] = $temp_split[1];
+  }*/
+  $blog_cats = array();
+  $sql = "SELECT parent, name, slug, wp_terms.term_id 
+			FROM `wp_term_taxonomy`, `wp_terms` 
+			WHERE wp_term_taxonomy.taxonomy = 'category'
+			AND wp_term_taxonomy.term_id = wp_terms.term_id";
+  $result = $this->db->query($sql);
+  while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+//    $blog_cats[$row['name']] = $row['slug'];
+    $blog_cats[$row['name']] = $row['term_id'];
   }
+  
 	echo $this->formL->reportErrors();
 	echo $this->formL->start('POST', "", 'name="programform"');
 ?>
 <fieldset>
-<legend>Please the show name and RSS feed name (if exists).</legend
-<br>
+<legend>Please select the program name from the lists below.</legend>
 <?php
 // makeNumberInput($name,$min="",$max="", $value="",$other="")
-  echo $this->formL->makeSelect('showid',$show_list,"");
-  echo $this->formL->formatOnError('showid','Show Name: ') . "<br>" ;
-  echo $this->formL->makeSelect('rssfeed',$rss_feed,"");
-  echo $this->formL->formatOnError('rssfeed','Show Rss Feed: ') . "<br>";
-  echo $this->formL->makeSelect('showblog',$blog_id,"");
-  echo $this->formL->formatOnError('showblog','Show Blog: ') . "<br>";?>
+  echo $this->formL->formatOnError('showid','Please select the show name') . "<br>" ;
+  echo $this->formL->makeSelect('showid',$show_list,"") . "<br><br>";
+  echo $this->formL->formatOnError('showblog','Please Select the Blog Category Name') . "<br>";
+  echo $this->formL->makeSelect('showblog',$blog_cats,"") . "<br><br>";
+  echo "Select this box if this is a talk show with an RSS feed: ";
+  echo $this->formL->makeCheckBoxes('rss_yes', array("RSS"=>"y")) . "<br>";
+  echo $this->formL->formatOnError('rssfeed','Please Select the Show Rss Feed') . "<br>";
+  echo $this->formL->makeSelect('rssfeed',$rss_feed,"") . "<br><br>";
+  echo "Select this box if this is a music show with a Radio Free America link: ";
+  echo $this->formL->makeCheckBoxes('rfa_yes', array("RFA"=>"y")) . "<br>";
+  echo $this->formL->formatOnError('rfa_link','Please Select the Show Radio Free America Link') . "<br>";
+  echo $this->formL->makeSelect('rfa_link',array("None"=>""),"") . "<br><br>";
+?>
 <input class="subbutton" type="submit" name="Submit" value="Submit">
 </fieldset>
-</form>
+</form><br>
 <?php
 $this->formL->finish();
 $show_id_no      = $uid['show_id'];
@@ -109,32 +126,38 @@ $host_logo    = $personaData['image'];
 $host_email   = $personaData['email'];
 $show_type    = $show_info_array['category'];
 $show_title   = $show_info_array['title'];
+$show_cat     = 236;
 //echo "ID is " . $show_blog_id;
 // need host "bio" and "image"
 $pagedata = <<<EOT
-[et_pb_row _builder_version="3.22.3" background_size="initial" background_position="top_left" background_repeat="repeat"]
-[et_pb_column type="2_5" _builder_version="3.0.47"][et_pb_image src="$show_logo" _builder_version="3.22.1"][/et_pb_image]
-[et_pb_text _builder_version="3.22.1"]<h3>Podcasts/Show Archives</h3>
-<a href="https://ksqd.org/feed/podcast/$rss_feed_url">$show_title - Podcast RSS Feed</a>[/et_pb_text]
-[et_pb_text _builder_version="3.22.1"]
-<a onclick = "cook_email()" href="https://ksqd.org/host-contact-form/" target="_blank">Click here to contact $show_host</a>[/et_pb_text]
+[et_pb_section bb_built="1" inner_width="auto" inner_max_width="none" _builder_version="3.24.1"]
+[et_pb_row _builder_version="3.24.1"]
+[et_pb_column type="2_3"]
+[et_pb_testimonial _builder_version="3.24.1" quote_icon_background_color="#f5f5f5" ]
+$show_descrip
+[/et_pb_testimonial]
+[et_pb_blog _builder_version="3.24.1" posts_number="4" include_categories=$show_blog_id show_categories="off"  show_thumbnail="off" show_comments="on" fullwidth="off" excerpt_length="200" /]
+[et_pb_code admin_label="Recent Playlists Code" _builder_version="3.24.1" z_index_tablet="500"]
+[wspin action="playing" count="5" show_id=$show_id_no]
+[/et_pb_code]
+[et_pb_code admin_label="View All Playlists Code" _builder_version="3.24.1" z_index_tablet="500"]
+<a href="https://ksqd.org/category/program/state-of-mind/">More</a>
+[/et_pb_code]
 [/et_pb_column]
-[et_pb_column type="3_5" _builder_version="3.0.47"][et_pb_testimonial _builder_version="3.15"]$show_descrip [/et_pb_testimonial]
-[et_pb_text _builder_version="3.22.1"]<p>Hosted by <strong>$show_host</strong></p>
-<p>Show Type: $show_type</p>[/et_pb_text][/et_pb_column][/et_pb_row]
-<hr />
-[et_pb_row _builder_version="3.22.4"][et_pb_column type="4_4" _builder_version="3.22.4"][et_pb_code _builder_version="3.22.4"]<iframe width="800" height="800" src="https://widgets.spinitron.com/KSQD/show/$show_id_no"></iframe>[/et_pb_code][/et_pb_column][/et_pb_row]
-[et_pb_row _builder_version="3.22.4"][et_pb_column type="4_4" _builder_version="3.22.4"]
-[et_pb_text _builder_version="3.19.14"]<h2>Blog Posts/Show Updates</h2>
-[/et_pb_text][et_pb_code _builder_version="3.19.14"][pt_view id="$show_blog_id"][/et_pb_code][/et_pb_column][/et_pb_row]
-[et_pb_row _builder_version="3.22.4"][et_pb_column type="4_4" _builder_version="3.22.4"]
-[et_pb_image src="$host_logo" _builder_version="3.22.1"][/et_pb_image]
+[et_pb_column type="1_3"]
+[et_pb_image src="$show_logo" _builder_version="3.22.1"][/et_pb_image]
+[et_pb_code _builder_version="3.24.1" z_index_tablet="500"]
+<h3>Airs</h3><!-- [et_pb_line_break_holder] -->[wspin action="upnext" count="5" show_id =$show_id_no]
+[/et_pb_code]
+[et_pb_code admin_label="Air Time Code" _builder_version="3.24.1" z_index_tablet="500"]
+<h2>Next Show</h2><!-- [et_pb_line_break_holder] -->[wspin action="upnext" count="5" show_id =$show_id_no]
+[/et_pb_code]
+[et_pb_text _builder_version="3.19.14"]<h2>Hosted by $show_host</h2>
+<a onclick = "cook_email()" href="https://ksqd.org/host-contact-form/" target="_blank">Click here to contact $show_host</a>
+[/et_pb_text]
 [et_pb_text _builder_version="3.19.14"]<h2>$show_host</h2>$host_bio
 [/et_pb_text]
-[et_pb_text _builder_version="3.19.14"]<h2>Recent Playlist</h2>
-[wspin action="playing" count="5" show_id=$show_id_no]
-[/et_pb_text]
-[/et_pb_column][/et_pb_row]
+[/et_pb_column][/et_pb_row][/et_pb_section]
 <script type="text/javascript">
     function cook_email(){ document.cookie = "host_email=$host_email;path=/"; }
 </script>
