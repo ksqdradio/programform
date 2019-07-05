@@ -65,15 +65,6 @@ function showContent($title, &$uid) {
 
   $blog_id = array();
   $blog_id['None'] = '';
-/*  $sql = "SELECT post_title FROM `wp_posts` 
-		WHERE post_type = 'pt_view'";
-  $result = $this->db->query($sql);
-  while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-    $temp = $row['post_title'];
-    $temp_split = explode(' [ID: ',$temp); // 0 is name, 1 is ID
-    $temp_split[1] = substr($temp_split[1], 0, -1); // removes ']' from ID
-    $blog_id[$temp_split[0]] = $temp_split[1];
-  }*/
   $blog_cats = array();
   $sql = "SELECT parent, name, slug, wp_terms.term_id 
 			FROM `wp_term_taxonomy`, `wp_terms` 
@@ -91,6 +82,23 @@ function showContent($title, &$uid) {
 <fieldset>
 <legend>Please select the program name from the lists below.</legend>
 <?php
+$RFA_list = array("Kitchen Sisters Present/PRX Remix Select" => "http://www.kitchensisters.org/present/",
+"Laura Flanders" => "http://www.lauraflanders.com/",
+"Counterspin" => "https://fair.org/counterspin/",
+"New Dimensions" => "https://newdimensions.org/",
+"On Being" => "https://onbeing.org/series/podcast/",
+"Ralph Nader" => "https://ralphnaderradiohour.com/",
+"Alternative Radio" => "https://www.alternativeradio.org/",
+"Democracy Now" => "https://www.democracynow.org/",
+"California Report" => "https://www.kqed.org/news/program/the-california-report",
+"Cephalotron" => "https://www.radiofreeamerica.com/show/cephalotron-1-k-squid",
+"The Cutting Edge" => "https://www.radiofreeamerica.com/show/the-cutting-edge-k-squid",
+"The Hive" => "https://www.radiofreeamerica.com/show/the-hive-k-squid",
+"Up Like 7!" => "https://www.radiofreeamerica.com/show/up-like-7-1-k-squid",
+"Making Contact" => "https://www.radioproject.org/",
+"Economic Update" => "https://www.rdwolff.com/",
+"Reveal Weekly" => "https://www.revealnews.org");
+
 // makeNumberInput($name,$min="",$max="", $value="",$other="")
   echo $this->formL->formatOnError('showid','Please select the show name') . "<br>" ;
   echo $this->formL->makeSelect('showid',$show_list,"") . "<br><br>";
@@ -103,7 +111,7 @@ function showContent($title, &$uid) {
   echo "Select this box if this is a music show with a Radio Free America link: ";
   echo $this->formL->makeCheckBoxes('rfa_yes', array("RFA"=>"y")) . "<br>";
   echo $this->formL->formatOnError('rfa_link','Please Select the Show Radio Free America Link') . "<br>";
-  echo $this->formL->makeSelect('rfa_link',array("None"=>""),"") . "<br><br>";
+  echo $this->formL->makeSelect('rfa_link',$RFA_list,"") . "<br><br>";
 ?>
 <input class="subbutton" type="submit" name="Submit" value="Submit">
 </fieldset>
@@ -127,39 +135,55 @@ $host_email   = $personaData['email'];
 $show_type    = $show_info_array['category'];
 $show_title   = $show_info_array['title'];
 $show_cat     = 236;
-//echo "ID is " . $show_blog_id;
+/*
+print_r($show_info_array);
+echo "<br>Show ID is " . $show_id_no . "<br>";
+echo "Blog ID is " . $show_blog_id . "<br>";
+*/
 // need host "bio" and "image"
 $pagedata = <<<EOT
 [et_pb_section bb_built="1" inner_width="auto" inner_max_width="none" _builder_version="3.24.1"]
+[et_pb_row][et_pb_column type="4_4" custom_padding__hover="|||" custom_padding="|||"]
+[et_pb_text _builder_version="3.24.1" text_text_align="center" text_text_color="#cd202c" text_text_shadow_horizontal_length="text_text_shadow_style,%91object Object%93" text_text_shadow_horizontal_length_tablet="0px" text_text_shadow_vertical_length="text_text_shadow_style,%91object Object%93" text_text_shadow_vertical_length_tablet="0px" text_text_shadow_blur_strength="text_text_shadow_style,%91object Object%93" text_text_shadow_blur_strength_tablet="1px" link_text_shadow_horizontal_length="link_text_shadow_style,%91object Object%93" link_text_shadow_horizontal_length_tablet="0px" link_text_shadow_vertical_length="link_text_shadow_style,%91object Object%93" link_text_shadow_vertical_length_tablet="0px" link_text_shadow_blur_strength="link_text_shadow_style,%91object Object%93" link_text_shadow_blur_strength_tablet="1px" ul_text_shadow_horizontal_length="ul_text_shadow_style,%91object Object%93" ul_text_shadow_horizontal_length_tablet="0px" ul_text_shadow_vertical_length="ul_text_shadow_style,%91object Object%93" ul_text_shadow_vertical_length_tablet="0px" ul_text_shadow_blur_strength="ul_text_shadow_style,%91object Object%93" ul_text_shadow_blur_strength_tablet="1px" ol_text_shadow_horizontal_length="ol_text_shadow_style,%91object Object%93" ol_text_shadow_horizontal_length_tablet="0px" ol_text_shadow_vertical_length="ol_text_shadow_style,%91object Object%93" ol_text_shadow_vertical_length_tablet="0px" ol_text_shadow_blur_strength="ol_text_shadow_style,%91object Object%93" ol_text_shadow_blur_strength_tablet="1px" quote_text_shadow_horizontal_length="quote_text_shadow_style,%91object Object%93" quote_text_shadow_horizontal_length_tablet="0px" quote_text_shadow_vertical_length="quote_text_shadow_style,%91object Object%93" quote_text_shadow_vertical_length_tablet="0px" quote_text_shadow_blur_strength="quote_text_shadow_style,%91object Object%93" quote_text_shadow_blur_strength_tablet="1px" header_text_shadow_horizontal_length="header_text_shadow_style,%91object Object%93" header_text_shadow_horizontal_length_tablet="0px" header_text_shadow_vertical_length="header_text_shadow_style,%91object Object%93" header_text_shadow_vertical_length_tablet="0px" header_text_shadow_blur_strength="header_text_shadow_style,%91object Object%93" header_text_shadow_blur_strength_tablet="1px" header_2_text_shadow_horizontal_length="header_2_text_shadow_style,%91object Object%93" header_2_text_shadow_horizontal_length_tablet="0px" header_2_text_shadow_vertical_length="header_2_text_shadow_style,%91object Object%93" header_2_text_shadow_vertical_length_tablet="0px" header_2_text_shadow_blur_strength="header_2_text_shadow_style,%91object Object%93" header_2_text_shadow_blur_strength_tablet="1px" header_3_text_shadow_horizontal_length="header_3_text_shadow_style,%91object Object%93" header_3_text_shadow_horizontal_length_tablet="0px" header_3_text_shadow_vertical_length="header_3_text_shadow_style,%91object Object%93" header_3_text_shadow_vertical_length_tablet="0px" header_3_text_shadow_blur_strength="header_3_text_shadow_style,%91object Object%93" header_3_text_shadow_blur_strength_tablet="1px" header_4_text_shadow_horizontal_length="header_4_text_shadow_style,%91object Object%93" header_4_text_shadow_horizontal_length_tablet="0px" header_4_text_shadow_vertical_length="header_4_text_shadow_style,%91object Object%93" header_4_text_shadow_vertical_length_tablet="0px" header_4_text_shadow_blur_strength="header_4_text_shadow_style,%91object Object%93" header_4_text_shadow_blur_strength_tablet="1px" header_5_text_shadow_horizontal_length="header_5_text_shadow_style,%91object Object%93" header_5_text_shadow_horizontal_length_tablet="0px" header_5_text_shadow_vertical_length="header_5_text_shadow_style,%91object Object%93" header_5_text_shadow_vertical_length_tablet="0px" header_5_text_shadow_blur_strength="header_5_text_shadow_style,%91object Object%93" header_5_text_shadow_blur_strength_tablet="1px" header_6_text_shadow_horizontal_length="header_6_text_shadow_style,%91object Object%93" header_6_text_shadow_horizontal_length_tablet="0px" header_6_text_shadow_vertical_length="header_6_text_shadow_style,%91object Object%93" header_6_text_shadow_vertical_length_tablet="0px" header_6_text_shadow_blur_strength="header_6_text_shadow_style,%91object Object%93" header_6_text_shadow_blur_strength_tablet="1px" box_shadow_horizontal_tablet="0px" box_shadow_vertical_tablet="0px" box_shadow_blur_tablet="40px" box_shadow_spread_tablet="0px" text_font_size="28px" text_letter_spacing="1px" text_font="|700|on||||||"]
+<p>$show_title</p>
+[/et_pb_text]
+[/et_pb_column]
+[/et_pb_row]
 [et_pb_row _builder_version="3.24.1"]
-[et_pb_column type="2_3"]
-[et_pb_testimonial _builder_version="3.24.1" quote_icon_background_color="#f5f5f5" ]
-$show_descrip
-[/et_pb_testimonial]
-[et_pb_blog _builder_version="3.24.1" posts_number="4" include_categories=$show_blog_id show_categories="off"  show_thumbnail="off" show_comments="on" fullwidth="off" excerpt_length="200" /]
+[et_pb_column type="2_3" custom_padding__hover="|||" custom_padding="|||"]
+[et_pb_blurb admin_label="Description Blurb" _builder_version="3.24.1" box_shadow_vertical_image_tablet="0px" box_shadow_blur_image_tablet="40px" text_shadow_horizontal_length="text_shadow_style,%91object Object%93" text_shadow_horizontal_length_tablet="0px" text_shadow_vertical_length="text_shadow_style,%91object Object%93" text_shadow_vertical_length_tablet="0px" text_shadow_blur_strength="text_shadow_style,%91object Object%93" text_shadow_blur_strength_tablet="1px" header_text_shadow_horizontal_length="header_text_shadow_style,%91object Object%93" header_text_shadow_horizontal_length_tablet="0px" header_text_shadow_vertical_length="header_text_shadow_style,%91object Object%93" header_text_shadow_vertical_length_tablet="0px" header_text_shadow_blur_strength="header_text_shadow_style,%91object Object%93" header_text_shadow_blur_strength_tablet="1px" body_text_shadow_horizontal_length="body_text_shadow_style,%91object Object%93" body_text_shadow_horizontal_length_tablet="0px" body_text_shadow_vertical_length="body_text_shadow_style,%91object Object%93" body_text_shadow_vertical_length_tablet="0px" body_text_shadow_blur_strength="body_text_shadow_style,%91object Object%93" body_text_shadow_blur_strength_tablet="1px" body_link_text_shadow_horizontal_length="body_link_text_shadow_style,%91object Object%93" body_link_text_shadow_horizontal_length_tablet="0px" body_link_text_shadow_vertical_length="body_link_text_shadow_style,%91object Object%93" body_link_text_shadow_vertical_length_tablet="0px" body_link_text_shadow_blur_strength="body_link_text_shadow_style,%91object Object%93" body_link_text_shadow_blur_strength_tablet="1px" body_ul_text_shadow_horizontal_length="body_ul_text_shadow_style,%91object Object%93" body_ul_text_shadow_horizontal_length_tablet="0px" body_ul_text_shadow_vertical_length="body_ul_text_shadow_style,%91object Object%93" body_ul_text_shadow_vertical_length_tablet="0px" body_ul_text_shadow_blur_strength="body_ul_text_shadow_style,%91object Object%93" body_ul_text_shadow_blur_strength_tablet="1px" body_ol_text_shadow_horizontal_length="body_ol_text_shadow_style,%91object Object%93" body_ol_text_shadow_horizontal_length_tablet="0px" body_ol_text_shadow_vertical_length="body_ol_text_shadow_style,%91object Object%93" body_ol_text_shadow_vertical_length_tablet="0px" body_ol_text_shadow_blur_strength="body_ol_text_shadow_style,%91object Object%93" body_ol_text_shadow_blur_strength_tablet="1px" body_quote_text_shadow_horizontal_length="body_quote_text_shadow_style,%91object Object%93" body_quote_text_shadow_horizontal_length_tablet="0px" body_quote_text_shadow_vertical_length="body_quote_text_shadow_style,%91object Object%93" body_quote_text_shadow_vertical_length_tablet="0px" body_quote_text_shadow_blur_strength="body_quote_text_shadow_style,%91object Object%93" body_quote_text_shadow_blur_strength_tablet="1px" box_shadow_vertical_tablet="0px" box_shadow_blur_tablet="40px" z_index_tablet="500" background_color="#00c0b5" border_radii_image="on|0px|0px|0px|0px" box_shadow_color_image="rgba(0,0,0,0.64)" border_radii="on|10px|10px|10px|10px" box_shadow_style="preset1" box_shadow_horizontal_image_tablet="0px" box_shadow_spread_image_tablet="0px" custom_padding="10px||10px|"]
+<p>$show_descrip</p>
+[/et_pb_blurb]
+[et_pb_blog _builder_version="3.24.1" posts_number="4" include_categories=$show_blog_id show_categories="off"   show_comments="on" fullwidth="off" excerpt_length="200" show_excerpt="off" /]
 [et_pb_code admin_label="Recent Playlists Code" _builder_version="3.24.1" z_index_tablet="500"]
-[wspin action="playing" count="5" show_id=$show_id_no]
+<div id="spinlist"></div>
 [/et_pb_code]
 [et_pb_code admin_label="View All Playlists Code" _builder_version="3.24.1" z_index_tablet="500"]
-<a href="https://ksqd.org/category/program/state-of-mind/">More</a>
+<a href="https://ksqd.org/category/program/$show_cat">More</a>
 [/et_pb_code]
 [/et_pb_column]
 [et_pb_column type="1_3"]
 [et_pb_image src="$show_logo" _builder_version="3.22.1"][/et_pb_image]
 [et_pb_code _builder_version="3.24.1" z_index_tablet="500"]
-<h3>Airs</h3><!-- [et_pb_line_break_holder] -->[wspin action="upnext" count="5" show_id =$show_id_no]
+<div id="spinairs"><h3>AIRS</h3></div>
 [/et_pb_code]
 [et_pb_code admin_label="Air Time Code" _builder_version="3.24.1" z_index_tablet="500"]
-<h2>Next Show</h2><!-- [et_pb_line_break_holder] -->[wspin action="upnext" count="5" show_id =$show_id_no]
+<h3>NEXT SHOW</h3><!-- [et_pb_line_break_holder] -->[wspin action="upnext" count="5" show_id =$show_id_no]
 [/et_pb_code]
-[et_pb_text _builder_version="3.19.14"]<h2>Hosted by $show_host</h2>
+[et_pb_text _builder_version="3.19.14"]<h3>HOSTED BY $show_host</h3>
 <a onclick = "cook_email()" href="https://ksqd.org/host-contact-form/" target="_blank">Click here to contact $show_host</a>
 [/et_pb_text]
-[et_pb_text _builder_version="3.19.14"]<h2>$show_host</h2>$host_bio
+[et_pb_text _builder_version="3.19.14"]<h3>PODCASTS/SHOW ARCHIVES</h3>
+<a href=$rss_feed_url target="_blank">$show_title - Podcast RSS Feed</a>
+[/et_pb_text]
+[et_pb_image src="$host_logo" _builder_version="3.22.1"][/et_pb_image]
+[et_pb_text _builder_version="3.19.14"]$host_bio
 [/et_pb_text]
 [/et_pb_column][/et_pb_row][/et_pb_section]
+<script src="https://ksqd.org/spinscrape.js"></script>
 <script type="text/javascript">
     function cook_email(){ document.cookie = "host_email=$host_email;path=/"; }
+	Ready($show_id_no);
 </script>
 EOT;
 if (!empty($uid['show_id'])) 
