@@ -79,7 +79,7 @@ class MainPage {
 			}
 		}
 //    	include "includes/header.php";	// same header for every page
-    	$this->showContent($title, $uid);
+    	return $this->showContent($title, $uid);
 //    	include "includes/footer.php";  // same footer for every page
 	}
 
