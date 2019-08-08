@@ -40,18 +40,27 @@ function processData(&$uid) {
 
 $show_id_no      = $this->formL->getValue("showid");
 $show_info_array = $this->get_show_by_id($show_id_no);
-$personaData     = $this->get_persona($show_info_array['persona']);
+$personaData = array();
+foreach ($show_info_array['persona'] as $persnum) {
+	array_push($personaData, $this->get_persona($persnum)); // array now
+}
 $show_logo       = $show_info_array['image'];
 $rss_feed_url = $this->formL->getValue("rssfeed");
 $rss_feed_name = array_search($rss_feed_url, $rss_feed); // find name for slug
 $show_blog_id = $this->formL->getValue("showblog"); // ID
 $show_descrip = $show_info_array['descrip'];
 $show_descrip = strip_tags(html_entity_decode($show_descrip));
-$show_host    = $personaData['name'];
-$host_bio     = $personaData['bio'];
-$host_bio     = strip_tags(html_entity_decode($host_bio));
-$host_logo    = $personaData['image'];
-$host_email   = $personaData['email'];
+// deal with array of personas
+$show_host = array();
+$host_bio  = array();
+$host_logo = array();
+foreach ($personaData as $pdata) {
+	array_push($show_host, $pdata['name']);
+	$host_b     = strip_tags(html_entity_decode($pdata['bio']));
+	array_push($host_bio, $host_b);
+	array_push($host_logo, $pdata['image']);
+}
+$host_email   = $personaData[0]['email'];
 $show_type    = $show_info_array['category'];
 $show_title      = $show_info_array['title'];
 $pagedata = <<<EOT
@@ -79,10 +88,15 @@ $pagedata = <<<EOT
 [et_pb_code admin_label="Air Time Code" _builder_version="3.24.1" z_index_tablet="500"]
 <h3>NEXT SHOW</h3><!-- [et_pb_line_break_holder] -->[wspin action="upnext" count="5" show_id =$show_id_no]
 [/et_pb_code]
-[et_pb_text _builder_version="3.19.14"]<h3>HOSTED BY $show_host</h3>
-<a onclick = "cook_email()" href="https://ksqd.org/host-contact-form/" target="_blank">Click here to contact $show_host</a>
-[/et_pb_text]
+[et_pb_text _builder_version="3.19.14"]<h3>HOSTED BY</h3>
 EOT;
+foreach ($show_host as $host_name) {
+	$pagedata .= $host_name . "<br>";
+}
+foreach ( $show_host as $index => $hname ) {
+	$pagedata .= "<a onclick = 'cook_email($host_email[$index])' href='https://ksqd.org/host-contact-form/' target='_blank'>Click here to contact $hname</a><br>";
+}
+$pagedata .= "[/et_pb_text]";
 if (!empty($rss_feed_url)) {
 	$pagedata.= <<<EOT
 [et_pb_text _builder_version="3.19.14"]<h3>PODCASTS/SHOW ARCHIVES</h3>
@@ -90,14 +104,17 @@ if (!empty($rss_feed_url)) {
 [/et_pb_text]
 EOT;
 }
+foreach( $host_logo as $index => $logo ) {
+	$pagedata .= "[et_pb_image src='$logo' _builder_version='3.22.1'][/et_pb_image]";
+	$pagedata .= "[et_pb_text _builder_version='3.19.14']";
+	$pagedata .= "<h4>$show_host[$index]</h4>$host_bio[$index]";
+	$pagedata .= "[/et_pb_text]";
+}
 $pagedata.= <<<EOT
-[et_pb_image src="$host_logo" _builder_version="3.22.1"][/et_pb_image]
-[et_pb_text _builder_version="3.19.14"]$host_bio
-[/et_pb_text]
 [/et_pb_column][/et_pb_row][/et_pb_section]
 <script src="https://ksqd.org/spinscrape.js"></script>
 <script type="text/javascript">
-    function cook_email(){ document.cookie = "host_email=$host_email;path=/"; }
+    function cook_email(hemail){ document.cookie = "host_email=hemail;path=/"; }
 	Ready($show_id_no);
 </script>
 EOT;
@@ -275,6 +292,8 @@ $RFA_list = array("None" => "",
 $this->formL->finish();
 $show_id_no      = $uid['show_id'];
 $show_info_array = $this->get_show_by_id($show_id_no);
+$show_title   = $show_info_array['title'];
+/*
 $personaData     = $this->get_persona($show_info_array['persona']);
 $show_logo       = $show_info_array['image'];
 $rss_feed_url = $uid['rss_feed'];
@@ -288,9 +307,8 @@ $host_bio     = strip_tags(html_entity_decode($host_bio));
 $host_logo    = $personaData['image'];
 $host_email   = $personaData['email'];
 $show_type    = $show_info_array['category'];
-$show_title   = $show_info_array['title'];
 $show_cat     = 236;
-/*
+
 print_r($show_info_array);
 echo "<br>Show ID is " . $show_id_no . "<br>";
 echo "Blog ID is " . $show_blog_id . "<br>";
@@ -439,11 +457,20 @@ function get_show_by_id($show_id) {
 	$shows_data['descrip']  = htmlspecialchars($shows_array['description'], ENT_NOQUOTES);
 	$shows_data['image']    = htmlspecialchars($shows_array['image'], ENT_NOQUOTES);
 	$shows_data['url']      = htmlspecialchars($shows_array['url'], ENT_NOQUOTES);
-	$shows_data['persona']  = htmlspecialchars($shows_array['_links']['personas'][0]['href'], ENT_NOQUOTES);
+	$pers_data = array();
+	foreach ($shows_array['_links']['personas'] as $pers) {
+		$tpers = htmlspecialchars($pers['href'],ENT_NOQUOTES);
+		$show_parse = parse_url($tpers, PHP_URL_PATH);
+		$tpers  = explode("/",$show_parse);
+		$tpers  = end($tpers);
+		array_push($pers_data,$tpers);
+	}
+	$shows_data['persona'] = $pers_data;
+/*	$shows_data['persona']  = htmlspecialchars($shows_array['_links']['personas'][0]['href'], ENT_NOQUOTES);
 	$show_parse = parse_url($shows_data['persona'], PHP_URL_PATH);
 	$shows_data['persona']  = explode("/",$show_parse);
 	$shows_data['persona']  = end($shows_data['persona']);
-
+*/
 	return $shows_data;
 }
 }
