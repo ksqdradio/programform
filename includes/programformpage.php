@@ -94,7 +94,7 @@ foreach ($show_host as $host_name) {
 	$pagedata .= $host_name . "<br>";
 }
 foreach ( $show_host as $index => $hname ) {
-	$pagedata .= "<a onclick = 'cook_email($host_email[$index])' href='https://ksqd.org/host-contact-form/' target='_blank'>Click here to contact $hname</a><br>";
+	$pagedata .= "<a onclick = 'cook_email(\"" . $host_email[$index] . "\")' href='https://ksqd.org/host-contact-form/' target='_blank'>Click here to contact $hname</a><br>";
 }
 $pagedata .= "[/et_pb_text]";
 if (!empty($rss_feed_url)) {
@@ -111,12 +111,13 @@ foreach( $host_logo as $index => $logo ) {
 	$pagedata .= "[/et_pb_text]";
 }
 $pagedata.= <<<EOT
-[/et_pb_column][/et_pb_row][/et_pb_section]
+[et_pb_code _builder_version="4.0.6" hover_enabled="0"]
 <script src="https://ksqd.org/spinscrape.js"></script>
 <script type="text/javascript">
-    function cook_email(hemail){ document.cookie = "host_email=hemail;path=/"; }
-	Ready($show_id_no);
+    function cook_email(hemail){ document.cookie = "host_email=" + hemail + ";path=/"; }
+//	Ready($show_id_no);
 </script>
+[/et_pb_code][/et_pb_column][/et_pb_row][/et_pb_section]
 EOT;
 // end of pagedata, insert into wp_posts
 /*comment_status - closed
