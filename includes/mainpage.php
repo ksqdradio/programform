@@ -11,8 +11,8 @@
  *
  */
 
-include_once "/var/www/html/wp-content/plugins/programform/includes/redirect.php";
-include_once "/var/www/html/wp-content/plugins/programform/includes/formlib.php";
+include_once "/var/www/html/kgwpt/wp-content/plugins/programform/includes/redirect.php";
+include_once "/var/www/html/kgwpt/wp-content/plugins/programform/includes/formlib.php";
 include_once "/var/www/html/includes/util.php";
 
 /**

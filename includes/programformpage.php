@@ -15,7 +15,7 @@
 * 
 */
 /* /var/www/html/wp-content/plugins/programform/includes */
-require_once("/var/www/html/wp-content/plugins/programform/includes/mainpage.php");
+require_once("/var/www/html/kgwpt/wp-content/plugins/programform/includes/mainpage.php");
 include_once "/var/www/html/includes/util.php";
 
 /**
@@ -64,6 +64,10 @@ $host_email   = $personaData[0]['email'];
 $show_type    = $show_info_array['category'];
 $show_title      = $show_info_array['title'];
 $pagedata = <<<EOT
+<script src="https://ksqd.org/spinscrape.js"></script>
+<script type="text/javascript">
+    function cook_email(hemail){ document.cookie = "host_email=" + hemail + ";path=/"; };
+document.addEventListener('DOMContentLoaded', Ready($show_id_no), false);</script>
 [et_pb_section bb_built="1" inner_width="auto" inner_max_width="none" _builder_version="3.24.1"]
 [et_pb_row][et_pb_column type="4_4" custom_padding__hover="|||" custom_padding="|||"]
 [et_pb_text _builder_version="3.24.1" text_text_align="center" text_text_shadow_horizontal_length="text_text_shadow_style,%91object Object%93" text_text_shadow_horizontal_length_tablet="0px" text_text_shadow_vertical_length="text_text_shadow_style,%91object Object%93" text_text_shadow_vertical_length_tablet="0px" text_text_shadow_blur_strength="text_text_shadow_style,%91object Object%93" text_text_shadow_blur_strength_tablet="1px" link_text_shadow_horizontal_length="link_text_shadow_style,%91object Object%93" link_text_shadow_horizontal_length_tablet="0px" link_text_shadow_vertical_length="link_text_shadow_style,%91object Object%93" link_text_shadow_vertical_length_tablet="0px" link_text_shadow_blur_strength="link_text_shadow_style,%91object Object%93" link_text_shadow_blur_strength_tablet="1px" ul_text_shadow_horizontal_length="ul_text_shadow_style,%91object Object%93" ul_text_shadow_horizontal_length_tablet="0px" ul_text_shadow_vertical_length="ul_text_shadow_style,%91object Object%93" ul_text_shadow_vertical_length_tablet="0px" ul_text_shadow_blur_strength="ul_text_shadow_style,%91object Object%93" ul_text_shadow_blur_strength_tablet="1px" ol_text_shadow_horizontal_length="ol_text_shadow_style,%91object Object%93" ol_text_shadow_horizontal_length_tablet="0px" ol_text_shadow_vertical_length="ol_text_shadow_style,%91object Object%93" ol_text_shadow_vertical_length_tablet="0px" ol_text_shadow_blur_strength="ol_text_shadow_style,%91object Object%93" ol_text_shadow_blur_strength_tablet="1px" quote_text_shadow_horizontal_length="quote_text_shadow_style,%91object Object%93" quote_text_shadow_horizontal_length_tablet="0px" quote_text_shadow_vertical_length="quote_text_shadow_style,%91object Object%93" quote_text_shadow_vertical_length_tablet="0px" quote_text_shadow_blur_strength="quote_text_shadow_style,%91object Object%93" quote_text_shadow_blur_strength_tablet="1px" header_text_shadow_horizontal_length="header_text_shadow_style,%91object Object%93" header_text_shadow_horizontal_length_tablet="0px" header_text_shadow_vertical_length="header_text_shadow_style,%91object Object%93" header_text_shadow_vertical_length_tablet="0px" header_text_shadow_blur_strength="header_text_shadow_style,%91object Object%93" header_text_shadow_blur_strength_tablet="1px" header_2_text_shadow_horizontal_length="header_2_text_shadow_style,%91object Object%93" header_2_text_shadow_horizontal_length_tablet="0px" header_2_text_shadow_vertical_length="header_2_text_shadow_style,%91object Object%93" header_2_text_shadow_vertical_length_tablet="0px" header_2_text_shadow_blur_strength="header_2_text_shadow_style,%91object Object%93" header_2_text_shadow_blur_strength_tablet="1px" header_3_text_shadow_horizontal_length="header_3_text_shadow_style,%91object Object%93" header_3_text_shadow_horizontal_length_tablet="0px" header_3_text_shadow_vertical_length="header_3_text_shadow_style,%91object Object%93" header_3_text_shadow_vertical_length_tablet="0px" header_3_text_shadow_blur_strength="header_3_text_shadow_style,%91object Object%93" header_3_text_shadow_blur_strength_tablet="1px" header_4_text_shadow_horizontal_length="header_4_text_shadow_style,%91object Object%93" header_4_text_shadow_horizontal_length_tablet="0px" header_4_text_shadow_vertical_length="header_4_text_shadow_style,%91object Object%93" header_4_text_shadow_vertical_length_tablet="0px" header_4_text_shadow_blur_strength="header_4_text_shadow_style,%91object Object%93" header_4_text_shadow_blur_strength_tablet="1px" header_5_text_shadow_horizontal_length="header_5_text_shadow_style,%91object Object%93" header_5_text_shadow_horizontal_length_tablet="0px" header_5_text_shadow_vertical_length="header_5_text_shadow_style,%91object Object%93" header_5_text_shadow_vertical_length_tablet="0px" header_5_text_shadow_blur_strength="header_5_text_shadow_style,%91object Object%93" header_5_text_shadow_blur_strength_tablet="1px" header_6_text_shadow_horizontal_length="header_6_text_shadow_style,%91object Object%93" header_6_text_shadow_horizontal_length_tablet="0px" header_6_text_shadow_vertical_length="header_6_text_shadow_style,%91object Object%93" header_6_text_shadow_vertical_length_tablet="0px" header_6_text_shadow_blur_strength="header_6_text_shadow_style,%91object Object%93" header_6_text_shadow_blur_strength_tablet="1px" box_shadow_horizontal_tablet="0px" box_shadow_vertical_tablet="0px" box_shadow_blur_tablet="40px" box_shadow_spread_tablet="0px" text_font_size="28px" text_letter_spacing="1px" text_font="|700|on||||||"]
@@ -74,7 +78,7 @@ $pagedata = <<<EOT
 [et_pb_row _builder_version="3.24.1"]
 [et_pb_column type="2_3" custom_padding__hover="|||" custom_padding="|||"]
 [et_pb_blurb admin_label="Description Blurb" _builder_version="3.24.1" box_shadow_vertical_image_tablet="0px" box_shadow_blur_image_tablet="40px" text_shadow_horizontal_length="text_shadow_style,%91object Object%93" text_shadow_horizontal_length_tablet="0px" text_shadow_vertical_length="text_shadow_style,%91object Object%93" text_shadow_vertical_length_tablet="0px" text_shadow_blur_strength="text_shadow_style,%91object Object%93" text_shadow_blur_strength_tablet="1px" header_text_shadow_horizontal_length="header_text_shadow_style,%91object Object%93" header_text_shadow_horizontal_length_tablet="0px" header_text_shadow_vertical_length="header_text_shadow_style,%91object Object%93" header_text_shadow_vertical_length_tablet="0px" header_text_shadow_blur_strength="header_text_shadow_style,%91object Object%93" header_text_shadow_blur_strength_tablet="1px" body_text_shadow_horizontal_length="body_text_shadow_style,%91object Object%93" body_text_shadow_horizontal_length_tablet="0px" body_text_shadow_vertical_length="body_text_shadow_style,%91object Object%93" body_text_shadow_vertical_length_tablet="0px" body_text_shadow_blur_strength="body_text_shadow_style,%91object Object%93" body_text_shadow_blur_strength_tablet="1px" body_link_text_shadow_horizontal_length="body_link_text_shadow_style,%91object Object%93" body_link_text_shadow_horizontal_length_tablet="0px" body_link_text_shadow_vertical_length="body_link_text_shadow_style,%91object Object%93" body_link_text_shadow_vertical_length_tablet="0px" body_link_text_shadow_blur_strength="body_link_text_shadow_style,%91object Object%93" body_link_text_shadow_blur_strength_tablet="1px" body_ul_text_shadow_horizontal_length="body_ul_text_shadow_style,%91object Object%93" body_ul_text_shadow_horizontal_length_tablet="0px" body_ul_text_shadow_vertical_length="body_ul_text_shadow_style,%91object Object%93" body_ul_text_shadow_vertical_length_tablet="0px" body_ul_text_shadow_blur_strength="body_ul_text_shadow_style,%91object Object%93" body_ul_text_shadow_blur_strength_tablet="1px" body_ol_text_shadow_horizontal_length="body_ol_text_shadow_style,%91object Object%93" body_ol_text_shadow_horizontal_length_tablet="0px" body_ol_text_shadow_vertical_length="body_ol_text_shadow_style,%91object Object%93" body_ol_text_shadow_vertical_length_tablet="0px" body_ol_text_shadow_blur_strength="body_ol_text_shadow_style,%91object Object%93" body_ol_text_shadow_blur_strength_tablet="1px" body_quote_text_shadow_horizontal_length="body_quote_text_shadow_style,%91object Object%93" body_quote_text_shadow_horizontal_length_tablet="0px" body_quote_text_shadow_vertical_length="body_quote_text_shadow_style,%91object Object%93" body_quote_text_shadow_vertical_length_tablet="0px" body_quote_text_shadow_blur_strength="body_quote_text_shadow_style,%91object Object%93" body_quote_text_shadow_blur_strength_tablet="1px" box_shadow_vertical_tablet="0px" box_shadow_blur_tablet="40px" z_index_tablet="500" background_color="#00c0b5" border_radii_image="on|0px|0px|0px|0px" box_shadow_color_image="rgba(0,0,0,0.64)" border_radii="on|10px|10px|10px|10px" box_shadow_style="preset1" box_shadow_horizontal_image_tablet="0px" box_shadow_spread_image_tablet="0px" custom_padding="10px||10px|"]
-<p style="color:black">$show_descrip</p>
+<div id="spindesc" style="color:black">$show_descrip</div>
 [/et_pb_blurb]
 [et_pb_blog _builder_version="3.24.1" posts_number="4" include_categories=$show_blog_id show_categories="off" fullwidth="off" excerpt_length="200" show_excerpt="off" /]
 [et_pb_code admin_label="Recent Playlists Code" _builder_version="3.24.1" z_index_tablet="500"]
@@ -90,8 +94,9 @@ $pagedata = <<<EOT
 [/et_pb_code]
 [et_pb_text _builder_version="3.19.14"]<h3>HOSTED BY</h3>
 EOT;
+$i = 0;
 foreach ($show_host as $host_name) {
-	$pagedata .= $host_name . "<br>";
+	$pagedata .= "<div id= 'spindjname" . $i++ . "'>" . $host_name . "</div><br>";
 }
 foreach ( $show_host as $index => $hname ) {
 	$pagedata .= "<a onclick = 'cook_email(\"" . $host_email[$index] . "\")' href='https://ksqd.org/host-contact-form/' target='_blank'>Click here to contact $hname</a><br>";
@@ -104,20 +109,16 @@ if (!empty($rss_feed_url)) {
 [/et_pb_text]
 EOT;
 }
+$i = 0;
 foreach( $host_logo as $index => $logo ) {
-	$pagedata .= "[et_pb_image src='$logo' _builder_version='3.22.1'][/et_pb_image]";
+	$pagedata .= "<img id='spindjimg" . $i . "' src='$logo' style='width: 250px'>";
 	$pagedata .= "[et_pb_text _builder_version='3.19.14']";
-	$pagedata .= "<h4>$show_host[$index]</h4>$host_bio[$index]";
+	$pagedata .= "<h4 id='spindjnm" . $i . "'>$show_host[$index]</h4>" ;
+	$pagedata .= "<div id='spindjtxt" . $i++ . "'>$host_bio[$index]</div>";
 	$pagedata .= "[/et_pb_text]";
 }
 $pagedata.= <<<EOT
-[et_pb_code _builder_version="4.0.6" hover_enabled="0"]
-<script src="https://ksqd.org/spinscrape.js"></script>
-<script type="text/javascript">
-    function cook_email(hemail){ document.cookie = "host_email=" + hemail + ";path=/"; }
-//	Ready($show_id_no);
-</script>
-[/et_pb_code][/et_pb_column][/et_pb_row][/et_pb_section]
+[/et_pb_column][/et_pb_row]
 EOT;
 // end of pagedata, insert into wp_posts
 /*comment_status - closed
