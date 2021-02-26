@@ -6,12 +6,13 @@
 
   // get the command
   $show_id = $_REQUEST['show_id'];
+  $dj_id = $_REQUEST['dj_number'];
   if (!empty($show_id)) 
-	echo scrape($show_id);
+	echo scrape($show_id,$dj_id);
   else
 	echo "";
 
-function scrape($show_id) {
+function scrape($show_id, $dj_id) {
 	$html = file_get_html("https://widgets.spinitron.com/KSQD/show/$show_id/");
 	$i = 0;
 	$output = array();
@@ -55,24 +56,27 @@ function scrape($show_id) {
 	}
 
 	$i = 0; //
-	$tarr = array();
-	foreach ($html->find('a') as $aref) {
+
+	if (!empty($dj_id)) {
+		$html = file_get_html("https://widgets.spinitron.com/KSQD/dj/$dj_id/");
+		$i = 0;
+
+		foreach ($html->find('h1') as $aref) {
 //		echo "Found ref " . $i . "\n";
-		if ( strpos($aref->href, "https://spinitron.com") !== false) {
-			$tarr[$i] = $aref->href;
-			$output['djname'][$i++] = $aref->plaintext;
+			if ( $aref->plaintext != "K-Squid" ) {
+				$output['djname'][$i++] = $aref->plaintext;
+			}
 		}
-	}
-	$i = 0;
-	foreach ($tarr as $dref) {
-		$html2 = file_get_html($dref);
-		foreach ($html2->find('div[class="image"]') as $div) {
+
+		foreach ($html->find('div[class="image"]') as $div) {
 			foreach ($div->find('img') as $img) {
 				$output['djimage'][$i] = "https://spinitron.com" . $img->src ;
 			}
 		}
+		
+		$i = 0;
 		$j = false;
-		foreach ($html2->find('p') as $pdesc) {
+		foreach ($html->find('p') as $pdesc) {
 			if ($j == true) {
 				$output['djtext'][$i] = $pdesc->plaintext;
 				$j = false;
@@ -81,7 +85,6 @@ function scrape($show_id) {
 				$j = true;
 			}
 		}
-		$i++;
 	}
 $jout = json_encode($output);
 echo "\n" . $jout;

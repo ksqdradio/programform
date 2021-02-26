@@ -10,6 +10,15 @@
  */
 		function Ready(show_id) {
 			var xmlhttp;
+			let xm_ext = "";
+			let dj_elem = document.getElementById('dj_number');
+			if (dj_elem != null) {
+				let dj_id = dj_elem.getAttribute('data-dj-number');
+				if(dj_id != null){
+//					alert('Variable "dj_number" is ' + dj_id);
+					xm_ext = "&dj_number=" + dj_id;
+				}    
+			}
 			try {
 				xmlhttp=new XMLHttpRequest();
 				console.log("xmlhttp");
@@ -33,7 +42,7 @@
 					}
 				}
 			}
-			xmlhttp.open("GET","https://ksqd.org/spinserv.php?show_id=" + show_id, true);
+			xmlhttp.open("GET","https://ksqd.org/spinserv.php?show_id=" + show_id + xm_ext, true);
 			xmlhttp.setRequestHeader ("Accept", "text/plain");
 			xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 			xmlhttp.send();
